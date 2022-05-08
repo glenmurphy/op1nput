@@ -1,0 +1,16 @@
+[package]
+name = "op1nput"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+midir = "0.7.0"
+rdev = "0.5.1"
+tokio = { version = "1.18.1", features = ["rt-multi-thread", "macros", "sync"] }
+tray-item = "0.7.0"
+
+#[build-dependencies]
+[target.'cfg(windows)'.build-dependencies]
+windres = "*"
