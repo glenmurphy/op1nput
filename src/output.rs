@@ -1,5 +1,5 @@
-use rdev::{simulate, EventType, SimulateError};
 pub use rdev::Key;
+use rdev::{simulate, EventType, SimulateError};
 
 #[derive(Clone)]
 #[allow(unused)]

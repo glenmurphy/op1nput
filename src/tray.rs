@@ -8,9 +8,12 @@ pub enum TrayMessage {
     Quit,
 }
 
-pub async fn init(mut main_rx: UnboundedReceiver<TrayMessage>, tray_tx: UnboundedSender<TrayMessage>) {
+pub async fn init(
+    mut main_rx: UnboundedReceiver<TrayMessage>,
+    tray_tx: UnboundedSender<TrayMessage>,
+) {
     let mut tray = TrayItem::new("OP1NPUT", "op1nput-off").unwrap();
-    
+
     tray.add_label("OP1INPUT").unwrap();
 
     tray.add_menu_item("Quit", move || {
@@ -29,11 +32,11 @@ pub async fn init(mut main_rx: UnboundedReceiver<TrayMessage>, tray_tx: Unbounde
             TrayMessage::Connected => {
                 println!("Setting on icon");
                 let _ = tray.set_icon("op1nput-on");
-            },
+            }
             TrayMessage::Disconnected => {
                 println!("Setting off icon");
                 let _ = tray.set_icon("op1nput-off");
-            },
+            }
             _ => {}
         }
     }
@@ -46,9 +49,7 @@ pub fn start() -> (UnboundedSender<TrayMessage>, UnboundedReceiver<TrayMessage>)
     // TODO: make this cross platform
     // TrayItem seems to have a different API on different platforms
     #[cfg(target_os = "windows")]
-    tokio::spawn(async move {
-        init(main_rx, tray_tx).await
-    });
+    tokio::spawn(async move { init(main_rx, tray_tx).await });
 
     (main_tx, tray_rx)
 }

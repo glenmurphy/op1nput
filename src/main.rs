@@ -14,23 +14,19 @@ use std::collections::HashMap;
 async fn main() {
     // Specify mapping of midi ids to controls
     // Notes and controls are separate maps because they use the same key ids
-    use output::Control::{*};
-    use output::Action::{*};
+    use output::Action::*;
+    use output::Control::*;
     use output::Key;
     let controls: HashMap<u8, output::Control> = HashMap::from([
         // Blue Rotary Encoder + Press
         (01, Knob(Key::F1, Key::F2)),
         (64, Button(Key::KeyA)),
         (24, Button(Key::KeyA)),
-        (25, CustomButton(
-                Sequence(vec![
-                    Press(Key::ControlLeft),
-                    Press(Key::KeyC),
-                ]),
-                Sequence(vec![
-                    Release(Key::ControlLeft),
-                    Release(Key::KeyC),
-                ]),
+        (
+            25,
+            CustomButton(
+                Sequence(vec![Press(Key::ControlLeft), Press(Key::KeyC)]),
+                Sequence(vec![Release(Key::ControlLeft), Release(Key::KeyC)]),
             ),
         ),
     ]);
