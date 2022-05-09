@@ -1,8 +1,10 @@
 # OP1NPUT
 
-Maps the Teenage Engineering OP-1 midi output to keyboard keypresses; runs in the system tray in Windows.
+Maps the Teenage Engineering OP-1's MIDI output to keyboard keypresses.
 
 This exists because many of the existing tools either require vJoy or emit keyboard events that DCS can't see.
+
+OP1NPUT runs in the system tray in Windows, is a 0.3MB executable, and uses less than 3MB of RAM with no background CPU usage.
 
 ## Status
 - Windows-only, no user configuration, only a framework to get started.
