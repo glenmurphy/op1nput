@@ -4,10 +4,10 @@
     windows_subsystem = "windows"
 )]
 
+mod keyboard;
 mod midi;
 mod output;
 mod tray;
-mod keyboard;
 
 use std::collections::HashMap;
 
@@ -15,9 +15,9 @@ use std::collections::HashMap;
 async fn main() {
     // Specify mapping of midi ids to controls
     // Notes and controls are separate maps because they use the same key ids
+    use keyboard::Key;
     use output::Action::*;
     use output::Control::*;
-    use keyboard::Key;
 
     let controls: HashMap<u8, output::Control> = HashMap::from([
         // Rotary Encoders + Press
@@ -25,8 +25,8 @@ async fn main() {
         (
             64,
             CustomButton(
-                Sequence(vec![Press(Key::Shift), Press(Key::Minus)]),       // press
-                Sequence(vec![Release(Key::Shift), Release(Key::Minus)]),   // release
+                Sequence(vec![Press(Key::Shift), Press(Key::Minus)]), // press
+                Sequence(vec![Release(Key::Shift), Release(Key::Minus)]), // release
             ),
         ),
         (02, Knob(Key::BracketLeft, Key::BracketRight)),
@@ -91,9 +91,9 @@ async fn main() {
         (39, Button(Key::Numpad2)), // Play
         (40, Button(Key::Numpad3)), // Stop
         // Misc keys under the main volume knob
-        (10, Button(Key::Numpad0)),    // Chart key
+        (10, Button(Key::Numpad0)),        // Chart key
         (05, Button(Key::NumpadMultiply)), // Speech bubble
-        (06, Button(Key::NumpadDivide)),  // Metronome
+        (06, Button(Key::NumpadDivide)),   // Metronome
     ]);
 
     let notes: HashMap<u8, output::Control> = HashMap::from([
@@ -153,7 +153,7 @@ async fn main() {
             Some(v) = tray_rx.recv() => {
                 match v {
                     tray::TrayMessage::Quit => {
-                        println!("bye!");
+                        println!("Bye! Missu! :*");
                         // Could do a cleaner shutdown here
                         std::process::exit(0);
                     },

@@ -29,11 +29,9 @@ pub async fn init(
         let message = main_rx.recv().await;
         match message.unwrap() {
             TrayMessage::Connected => {
-                println!("Setting on icon");
                 let _ = tray.set_icon("op1nput-on");
             }
             TrayMessage::Disconnected => {
-                println!("Setting off icon");
                 let _ = tray.set_icon("op1nput-off");
             }
             _ => {}

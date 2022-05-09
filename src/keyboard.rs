@@ -2,7 +2,10 @@
 // SendInput using the vk codes, whereas games need SendInput with keyboard
 // scancodes
 use std::io::Error;
-use winapi::um::winuser::{INPUT_u, INPUT, INPUT_KEYBOARD, KEYBDINPUT, SendInput, KEYEVENTF_KEYUP, KEYEVENTF_SCANCODE, KEYEVENTF_EXTENDEDKEY};
+use winapi::um::winuser::{
+    INPUT_u, SendInput, INPUT, INPUT_KEYBOARD, KEYBDINPUT, KEYEVENTF_EXTENDEDKEY, KEYEVENTF_KEYUP,
+    KEYEVENTF_SCANCODE,
+};
 
 // keyboard scan codes from http://www.quadibloc.com/comp/scan.htm
 #[derive(Copy, Clone)]
@@ -141,7 +144,7 @@ pub enum Key {
     ControlRight = 0x0E1D,
     Alt = 0x38, // AKA Option key
     AltGr = 0x0E38,
-    Meta = 0x0E5B,	// AKA Windows Key,
+    Meta = 0x0E5B, // AKA Windows Key,
     MetaRight = 0x0E5C,
     Menu = 0x0E5D,
     // Media Keys
@@ -167,13 +170,17 @@ pub enum Key {
     BrowserForward = 0xE069,
     BrowserStop = 0xE068,
     BrowserRefresh = 0xE067,
-    BrowserBookmarks = 0xE066
+    BrowserBookmarks = 0xE066,
 }
 
 fn send_key(key: Key, down: bool) -> Result<(), Error> {
     let mut input_u: INPUT_u = unsafe { std::mem::zeroed() };
 
-    let mut flags = if down { KEYEVENTF_SCANCODE } else {KEYEVENTF_KEYUP | KEYEVENTF_SCANCODE };
+    let mut flags = if down {
+        KEYEVENTF_SCANCODE
+    } else {
+        KEYEVENTF_KEYUP | KEYEVENTF_SCANCODE
+    };
     if key as u32 > 0xFF {
         flags |= KEYEVENTF_EXTENDEDKEY;
     }
@@ -184,13 +191,13 @@ fn send_key(key: Key, down: bool) -> Result<(), Error> {
             dwExtraInfo: 0,
             wScan: key as u16,
             time: 0,
-            dwFlags: flags
+            dwFlags: flags,
         }
     }
 
     let mut input = INPUT {
         type_: INPUT_KEYBOARD,
-        u: input_u
+        u: input_u,
     };
     let ipsize = std::mem::size_of::<INPUT>() as i32;
     unsafe {

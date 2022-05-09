@@ -1,5 +1,5 @@
 use crate::keyboard;
-use crate::keyboard::{Key};
+use crate::keyboard::Key;
 
 #[derive(Clone)]
 #[allow(unused)]
@@ -73,12 +73,12 @@ pub fn handle_control(control: &Control, data: u8) {
         Control::Note(key) if data > 72 => press(*key),
         Control::Note(key) if data <= 72 => release(*key),
 
-        Control::CustomKnob(left, _right) if data == 127 => handle_action(&left), // knob right
-        Control::CustomKnob(_left, right) if data <= 1 => handle_action(&right),  // knob left
-        Control::CustomButton(down, _up) if data == 127 => handle_action(&down),  // knob left
-        Control::CustomButton(_down, up) if data <= 1 => handle_action(&up),      // knob left
-        Control::CustomNote(down, _up) if data > 72 => handle_action(&down),      // knob left
-        Control::CustomNote(_down, up) if data <= 72 => handle_action(&up),       // knob left
+        Control::CustomKnob(left, _right) if data == 127 => handle_action(&left),
+        Control::CustomKnob(_left, right) if data <= 1 => handle_action(&right),
+        Control::CustomButton(down, _up) if data == 127 => handle_action(&down),
+        Control::CustomButton(_down, up) if data <= 1 => handle_action(&up),
+        Control::CustomNote(down, _up) if data > 72 => handle_action(&down),
+        Control::CustomNote(_down, up) if data <= 72 => handle_action(&up),
 
         _ => println!("Unknown control: {}", data),
     }
