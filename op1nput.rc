@@ -1,3 +1,3 @@
-id          ICON "op1nput-on.ico"
-op1nput-off ICON "op1nput-off.ico"
-op1nput-on  ICON "op1nput-on.ico"
+id          ICON "./ico/op1nput.ico"
+op1nput-off ICON "./ico/tray-off.ico"
+op1nput-on  ICON "./ico/tray-on.ico"

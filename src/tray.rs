@@ -17,7 +17,6 @@ pub async fn init(
     tray.add_label("OP1INPUT").unwrap();
 
     tray.add_menu_item("Quit", move || {
-        println!("Quit");
         let _ = tray_tx.send(TrayMessage::Quit);
     })
     .unwrap();
