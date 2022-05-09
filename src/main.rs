@@ -25,8 +25,8 @@ async fn main() {
         (
             64,
             CustomButton(
-                Sequence(vec![Press(Key::Shift), Press(Key::Minus)]),
-                Sequence(vec![Release(Key::Shift), Release(Key::Minus)]),
+                Sequence(vec![Press(Key::Shift), Press(Key::Minus)]),       // press
+                Sequence(vec![Release(Key::Shift), Release(Key::Minus)]),   // release
             ),
         ),
         (02, Knob(Key::BracketLeft, Key::BracketRight)),
@@ -137,15 +137,14 @@ async fn main() {
                     midi::MidiMessage::Connected => {
                         let _ = tray_tx.send(tray::TrayMessage::Connected);
                     }
-                    midi::MidiMessage::Data(ch, id, val) => {
-                        if ch == 176 {
-                            if let Some(control) = controls.get(&id) {
-                                output::handle_control(&control, val);
-                            }
-                        } else {
-                            if let Some(control) = notes.get(&id) {
-                                output::handle_control(&control, val);
-                            }
+                    midi::MidiMessage::Data(ch, id, val) if ch == 176 => {
+                        if let Some(control) = controls.get(&id) {
+                            output::handle_control(&control, val);
+                        }
+                    }
+                    midi::MidiMessage::Data(_ch, id, val) => {
+                        if let Some(control) = notes.get(&id) {
+                            output::handle_control(&control, val);
                         }
                     }
                 }
