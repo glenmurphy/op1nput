@@ -14,7 +14,6 @@ use std::collections::HashMap;
 async fn main() {
     // Specify mapping of midi ids to controls
     // Notes and controls are separate maps because they use the same key ids
-
     use output::Action::*;
     use output::Control::*;
     use output::Key;
@@ -91,20 +90,9 @@ async fn main() {
         (39, Button(Key::Num2)), // Play
         (40, Button(Key::Num3)), // Stop
         // Misc keys under the main volume knob
-        (10, Button(Key::Num0)), // Chart key
-        (05, Button(Key::KpMinus)),  // Speech bubble
-        (06, Button(Key::KpPlus)),   // Metronome
-
-                                    /*
-                                    // Example of other mapping:
-                                    (
-                                        25,
-                                        CustomButton(
-                                            Sequence(vec![Press(Key::ControlLeft), Press(Key::KeyC)]),
-                                            Sequence(vec![Release(Key::ControlLeft), Release(Key::KeyC)]),
-                                        ),
-                                    ),
-                                     */
+        (10, Button(Key::Num0)),    // Chart key
+        (05, Button(Key::KpMinus)), // Speech bubble
+        (06, Button(Key::KpPlus)),  // Metronome
     ]);
 
     let notes: HashMap<u8, output::Control> = HashMap::from([
