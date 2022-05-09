@@ -1,5 +1,5 @@
-pub use rdev::Key;
-use rdev::{simulate, EventType, SimulateError};
+use crate::keyboard;
+use crate::keyboard::{Key};
 
 #[derive(Clone)]
 #[allow(unused)]
@@ -24,32 +24,21 @@ pub enum Control {
     CustomNote(Action, Action),
 }
 
-fn send(event_type: &EventType) {
-    match simulate(event_type) {
-        Ok(()) => (),
-        Err(SimulateError) => {
-            println!("We could not send {:?}", event_type);
-        }
-    }
-    // Let ths OS catchup (at least MacOS)
-    // let delay = std::time::Duration::from_millis(20);
-    // std::thread::sleep(delay);
-}
-
 fn tap(key: Key) {
     tokio::spawn(async move {
-        send(&EventType::KeyPress(key));
+        keyboard::press(key);
         std::thread::sleep(std::time::Duration::from_millis(20));
-        send(&EventType::KeyRelease(key));
+        keyboard::release(key);
     });
 }
 
 fn press(key: Key) {
-    send(&EventType::KeyPress(key));
+    keyboard::press(key);
+    //send(&EventType::KeyPress(key));
 }
 
 fn release(key: Key) {
-    send(&EventType::KeyRelease(key));
+    keyboard::release(key);
 }
 
 fn sequence(seq: Vec<Action>) {

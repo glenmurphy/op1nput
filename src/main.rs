@@ -7,6 +7,7 @@
 mod midi;
 mod output;
 mod tray;
+mod keyboard;
 
 use std::collections::HashMap;
 
@@ -16,40 +17,40 @@ async fn main() {
     // Notes and controls are separate maps because they use the same key ids
     use output::Action::*;
     use output::Control::*;
-    use output::Key;
+    use keyboard::Key;
 
     let controls: HashMap<u8, output::Control> = HashMap::from([
         // Rotary Encoders + Press
-        (01, Knob(Key::Minus, Key::Equal)),
+        (01, Knob(Key::Minus, Key::Equals)),
         (
             64,
             CustomButton(
-                Sequence(vec![Press(Key::ShiftLeft), Press(Key::Minus)]),
-                Sequence(vec![Release(Key::ShiftLeft), Release(Key::Minus)]),
+                Sequence(vec![Press(Key::Shift), Press(Key::Minus)]),
+                Sequence(vec![Release(Key::Shift), Release(Key::Minus)]),
             ),
         ),
-        (02, Knob(Key::LeftBracket, Key::RightBracket)),
+        (02, Knob(Key::BracketLeft, Key::BracketRight)),
         (
             65,
             CustomButton(
-                Sequence(vec![Press(Key::ShiftLeft), Press(Key::LeftBracket)]),
-                Sequence(vec![Release(Key::ShiftLeft), Release(Key::LeftBracket)]),
+                Sequence(vec![Press(Key::Shift), Press(Key::BracketLeft)]),
+                Sequence(vec![Release(Key::Shift), Release(Key::BracketLeft)]),
             ),
         ),
         (03, Knob(Key::SemiColon, Key::Quote)),
         (
             66,
             CustomButton(
-                Sequence(vec![Press(Key::ShiftLeft), Press(Key::SemiColon)]),
-                Sequence(vec![Release(Key::ShiftLeft), Release(Key::SemiColon)]),
+                Sequence(vec![Press(Key::Shift), Press(Key::SemiColon)]),
+                Sequence(vec![Release(Key::Shift), Release(Key::SemiColon)]),
             ),
         ),
-        (04, Knob(Key::Comma, Key::Dot)),
+        (04, Knob(Key::Comma, Key::Period)),
         (
             67,
             CustomButton(
-                Sequence(vec![Press(Key::ShiftLeft), Press(Key::Comma)]),
-                Sequence(vec![Release(Key::ShiftLeft), Release(Key::Comma)]),
+                Sequence(vec![Press(Key::Shift), Press(Key::Comma)]),
+                Sequence(vec![Release(Key::Shift), Release(Key::Comma)]),
             ),
         ),
         // Numbered row below rotary encoders
@@ -74,52 +75,52 @@ async fn main() {
         (
             41,
             CustomButton(
-                Sequence(vec![Press(Key::ShiftLeft), Press(Key::Tab)]),
-                Sequence(vec![Release(Key::ShiftLeft), Release(Key::Tab)]),
+                Sequence(vec![Press(Key::Shift), Press(Key::Tab)]),
+                Sequence(vec![Release(Key::Shift), Release(Key::Tab)]),
             ),
         ), // >
         (42, Button(Key::Tab)), // <
         // The nine-grid on the left, above the < > + Shift keys. Mentally maps to a numpad
-        (07, Button(Key::Num7)), // Blue Squiggle
-        (08, Button(Key::Num8)), // Green halo
-        (09, Button(Key::Num9)), // Tape deck
-        (15, Button(Key::Num4)), // Orange 1-4 Up
-        (16, Button(Key::Num5)), // Orange Dot down
-        (17, Button(Key::Num6)), // Orange scissors
-        (38, Button(Key::Num1)), // Orange Record
-        (39, Button(Key::Num2)), // Play
-        (40, Button(Key::Num3)), // Stop
+        (07, Button(Key::Numpad7)), // Blue Squiggle
+        (08, Button(Key::Numpad8)), // Green halo
+        (09, Button(Key::Numpad9)), // Tape deck
+        (15, Button(Key::Numpad4)), // Orange 1-4 Up
+        (16, Button(Key::Numpad5)), // Orange Dot down
+        (17, Button(Key::Numpad6)), // Orange scissors
+        (38, Button(Key::Numpad1)), // Orange Record
+        (39, Button(Key::Numpad2)), // Play
+        (40, Button(Key::Numpad3)), // Stop
         // Misc keys under the main volume knob
-        (10, Button(Key::Num0)),    // Chart key
-        (05, Button(Key::KpMinus)), // Speech bubble
-        (06, Button(Key::KpPlus)),  // Metronome
+        (10, Button(Key::Numpad0)),    // Chart key
+        (05, Button(Key::NumpadMultiply)), // Speech bubble
+        (06, Button(Key::NumpadDivide)),  // Metronome
     ]);
 
     let notes: HashMap<u8, output::Control> = HashMap::from([
-        (53, Note(Key::KeyA)),
-        (54, Note(Key::KeyB)),
-        (55, Note(Key::KeyC)),
-        (56, Note(Key::KeyD)),
-        (57, Note(Key::KeyE)),
-        (58, Note(Key::KeyF)),
-        (59, Note(Key::KeyG)),
-        (60, Note(Key::KeyH)),
-        (61, Note(Key::KeyI)),
-        (62, Note(Key::KeyJ)),
-        (63, Note(Key::KeyK)),
-        (64, Note(Key::KeyL)),
-        (65, Note(Key::KeyM)),
-        (66, Note(Key::KeyN)),
-        (67, Note(Key::KeyO)),
-        (68, Note(Key::KeyP)),
-        (69, Note(Key::KeyQ)),
-        (70, Note(Key::KeyR)),
-        (71, Note(Key::KeyS)),
-        (72, Note(Key::KeyT)),
-        (73, Note(Key::KeyU)),
-        (74, Note(Key::KeyV)),
-        (75, Note(Key::KeyW)),
-        (76, Note(Key::KeyX)),
+        (53, Note(Key::A)),
+        (54, Note(Key::B)),
+        (55, Note(Key::C)),
+        (56, Note(Key::D)),
+        (57, Note(Key::E)),
+        (58, Note(Key::F)),
+        (59, Note(Key::G)),
+        (60, Note(Key::H)),
+        (61, Note(Key::I)),
+        (62, Note(Key::J)),
+        (63, Note(Key::K)),
+        (64, Note(Key::L)),
+        (65, Note(Key::M)),
+        (66, Note(Key::N)),
+        (67, Note(Key::O)),
+        (68, Note(Key::P)),
+        (69, Note(Key::Q)),
+        (70, Note(Key::R)),
+        (71, Note(Key::S)),
+        (72, Note(Key::T)),
+        (73, Note(Key::U)),
+        (74, Note(Key::V)),
+        (75, Note(Key::W)),
+        (76, Note(Key::X)),
     ]);
 
     // Spawn our threads for the system tray and midi input

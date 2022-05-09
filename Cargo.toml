@@ -7,9 +7,9 @@ edition = "2021"
 
 [dependencies]
 midir = "0.7.0"
-rdev = "0.5.1"
 tokio = { version = "1.18.1", features = ["rt-multi-thread", "macros", "sync"] }
 tray-item = "0.7.0"
+winapi = { version = "0.3.9", features = ["winuser"] }
 
 #[build-dependencies]
 [target.'cfg(windows)'.build-dependencies]
