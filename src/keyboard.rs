@@ -1,14 +1,6 @@
 // We have to make our own keyboard system because the existing systems use
 // SendInput using the vk codes, whereas games need SendInput with keyboard
 // scancodes
-
-// https://gist.github.com/littletsu/d1c1b512d6843071144b7b89109a8de2
-
-// List of Scan codes
-// https://superuser.com/questions/550679/where-to-find-windows-keyboard-scancode-registry-information
-// http://www.quadibloc.com/comp/scan.htm
-
-extern crate winapi;
 use std::io::Error;
 use winapi::um::winuser::{INPUT_u, INPUT, INPUT_KEYBOARD, KEYBDINPUT, SendInput, KEYEVENTF_KEYUP, KEYEVENTF_SCANCODE, KEYEVENTF_EXTENDEDKEY};
 
