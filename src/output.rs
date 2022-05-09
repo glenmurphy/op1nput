@@ -77,19 +77,19 @@ fn handle_action(action: &Action) {
 
 pub fn handle_control(control: &Control, data: u8) {
     match control {
-        Control::Knob(_left_key, right_key) if data == 127 => tap(*right_key),
-        Control::Knob(left_key, _right_key) if data <= 1 => tap(*left_key),
+        Control::Knob(left_key, _right_key) if data == 127 => tap(*left_key),
+        Control::Knob(_left_key, right_key) if data <= 1 => tap(*right_key),
         Control::Button(key) if data == 127 => press(*key),
         Control::Button(key) if data <= 1 => release(*key),
         Control::Note(key) if data > 72 => press(*key),
         Control::Note(key) if data <= 72 => release(*key),
 
-        Control::CustomKnob(_left, right) if data == 127 => handle_action(&right), // knob right
-        Control::CustomKnob(left, _right) if data <= 1 => handle_action(&left),    // knob left
-        Control::CustomButton(down, _up) if data == 127 => handle_action(&down),   // knob left
-        Control::CustomButton(_down, up) if data <= 1 => handle_action(&up),       // knob left
-        Control::CustomNote(down, _up) if data > 72 => handle_action(&down),       // knob left
-        Control::CustomNote(_down, up) if data <= 72 => handle_action(&up),        // knob left
+        Control::CustomKnob(left, _right) if data == 127 => handle_action(&left), // knob right
+        Control::CustomKnob(_left, right) if data <= 1 => handle_action(&right),  // knob left
+        Control::CustomButton(down, _up) if data == 127 => handle_action(&down),  // knob left
+        Control::CustomButton(_down, up) if data <= 1 => handle_action(&up),      // knob left
+        Control::CustomNote(down, _up) if data > 72 => handle_action(&down),      // knob left
+        Control::CustomNote(_down, up) if data <= 72 => handle_action(&up),       // knob left
 
         _ => println!("Unknown control: {}", data),
     }
