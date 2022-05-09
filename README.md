@@ -3,10 +3,8 @@
 Maps the Teenage Engineering OP-1 midi output to keyboard keypresses; runs in the system tray in Windows.
 
 ## Status
-
-Development, no user configuration - only a framework to get started.
-
-Control mappings are currently defined in [src/main.rs](./src/main.rs)
+- Windows-only, no user configuration, only a framework to get started.
+- Control mappings are defined in [src/main.rs](./src/main.rs)
 
 ## Usage
 - Plug in your OP-1
