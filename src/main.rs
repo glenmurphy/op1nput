@@ -137,12 +137,12 @@ async fn main() {
                     midi::MidiMessage::Connected => {
                         let _ = tray_tx.send(tray::TrayMessage::Connected);
                     }
-                    midi::MidiMessage::Data(ch, id, val) if ch == 176 => {
+                    midi::MidiMessage::Control(_ch, id, val) => {
                         if let Some(control) = controls.get(&id) {
                             output::handle_control(&control, val);
                         }
                     }
-                    midi::MidiMessage::Data(_ch, id, val) => {
+                    midi::MidiMessage::Note(id, val) => {
                         if let Some(control) = notes.get(&id) {
                             output::handle_control(&control, val);
                         }

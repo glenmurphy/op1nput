@@ -21,7 +21,8 @@ where
 #[allow(unused)]
 pub enum MidiMessage {
     Connected,
-    Data(u8, u8, u8),
+    Control(u8, u8, u8),
+    Note(u8, u8),
 }
 
 pub async fn init(device_name: String, midi_tx: UnboundedSender<MidiMessage>) {
@@ -45,12 +46,16 @@ pub async fn init(device_name: String, midi_tx: UnboundedSender<MidiMessage>) {
         &device_port,
         &device_name,
         move |_timestamp, data, midi_tx| {
-            let _ = midi_tx.send(MidiMessage::Data(data[0], data[1], data[2]));
+            if data[0] >= 176 {
+                let _ = midi_tx.send(MidiMessage::Control(data[0] - 176, data[1], data[2])).unwrap();
+            } else {
+                let _ = midi_tx.send(MidiMessage::Note(data[1], data[2]));
+            }
         },
         midi_tx,
     );
 
-    // All the important stuff is happening in stuff we have handles to, but exiting
+    // All the important stuff is happening in places we have handles to, but exiting
     // will close those handles, so peace out here. In future, if we need to accept
     // external commands, we can have start() return a channel to the main thread
     // and this can be a recv loop.
