@@ -39,7 +39,26 @@ pub async fn init(
     }
 }
 
-pub fn start() -> (UnboundedSender<TrayMessage>, UnboundedReceiver<TrayMessage>) {
+pub struct TrayInterface {
+    pub tx : UnboundedSender<TrayMessage>,
+    pub rx : UnboundedReceiver<TrayMessage>
+}
+
+impl TrayInterface {
+    pub fn send(&self, message: TrayMessage) {
+        let _ = self.tx.send(message);
+    }
+
+    //pub fn clone_tx(&self) -> UnboundedSender<TrayMessage> {
+    //    self.tx.clone()
+    //}
+
+    pub async fn recv(&mut self) -> Option<TrayMessage> {
+        tokio::macros::support::poll_fn(|cx| self.rx.poll_recv(cx)).await
+    }
+}
+
+pub fn start() -> TrayInterface {
     let (tray_tx, tray_rx) = unbounded_channel::<TrayMessage>();
     let (main_tx, main_rx) = unbounded_channel::<TrayMessage>();
 
@@ -48,5 +67,8 @@ pub fn start() -> (UnboundedSender<TrayMessage>, UnboundedReceiver<TrayMessage>)
     #[cfg(target_os = "windows")]
     tokio::spawn(async move { init(main_rx, tray_tx).await });
 
-    (main_tx, tray_rx)
+    TrayInterface {
+        tx : main_tx,
+        rx : tray_rx
+    }
 }

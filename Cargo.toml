@@ -9,7 +9,7 @@ edition = "2021"
 midir = "0.7.0"
 tokio = { version = "1.18.1", features = ["rt-multi-thread", "macros", "sync"] }
 tray-item = "0.7.0"
-winapi = { version = "0.3.9", features = ["winuser"] }
+keyboard = { path = "./keyboard" }
 
 #[build-dependencies]
 [target.'cfg(windows)'.build-dependencies]

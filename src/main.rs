@@ -4,7 +4,7 @@
     windows_subsystem = "windows"
 )]
 
-mod keyboard;
+use keyboard;
 mod midi;
 mod output;
 mod tray;
@@ -124,7 +124,7 @@ async fn main() {
     ]);
 
     // Spawn our threads for the system tray and midi input
-    let (tray_tx, mut tray_rx) = tray::start();
+    let mut tray = tray::start();
     let mut midi_rx = midi::start("OP-1 Midi Device".to_string()).await;
 
     // Handle messages from those threads
@@ -135,7 +135,7 @@ async fn main() {
 
                 match v {
                     midi::MidiMessage::Connected => {
-                        let _ = tray_tx.send(tray::TrayMessage::Connected);
+                        let _ = tray.send(tray::TrayMessage::Connected);
                     }
                     midi::MidiMessage::Control(_ch, id, val) => {
                         if let Some(control) = controls.get(&id) {
@@ -150,7 +150,7 @@ async fn main() {
                 }
 
             },
-            Some(v) = tray_rx.recv() => {
+            Some(v) = tray.recv() => {
                 match v {
                     tray::TrayMessage::Quit => {
                         println!("Bye! Missu! :*");

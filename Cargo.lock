@@ -559,6 +559,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "keyboard"
+version = "0.1.0"
+dependencies = [
+ "winapi",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -706,10 +713,10 @@ checksum = "87f3e037eac156d1775da914196f0f37741a274155e34a0b7e427c35d2a2ecb9"
 name = "op1nput"
 version = "0.1.0"
 dependencies = [
+ "keyboard",
  "midir",
  "tokio",
  "tray-item",
- "winapi",
  "windres",
 ]
 
